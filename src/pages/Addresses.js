@@ -28,7 +28,6 @@ function AddressesForm(props) {
   const { id } = props.match.params;
 
   useEffect(() => {
-    console.log("333333", id);
     async function loadData() {
       try {
         const { data } = await getAddressesId(id);
@@ -78,39 +77,39 @@ function AddressesForm(props) {
           <Form form={form} layout="vertical" onFinish={sendAddresses}>
             <Form.Item name="origin" label="Origin Address:">
               <Input
-                defaultValue={address["origin"] ? address["origin"] : ""}
+                //defaultValue={address["origin"] ? address["origin"] : ""}
                 onChange={(e) => handleChange("origin", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="origin_floor" label="Origin Floor:">
               <Input
-                defaultValuee={
-                  address["origin_floor"] ? address["origin_floor"] : ""
-                }
+                // defaultValue={
+                //   address["origin_floor"] ? address["origin_floor"] : ""
+                // }
                 onChange={(e) => handleChange("origin_floor", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="destination" label="Destination Address:">
               <Input
-                defaultValue={
-                  address["destination"] ? address["destination"] : ""
-                }
+                // defaultValue={
+                //   address["destination"] ? address["destination"] : ""
+                // }
                 onChange={(e) => handleChange("destination", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="destination_floor" label="Destination Floor:">
               <Input
-                defaultValue={
-                  address["destination_floor"]
-                    ? address["destination_floor"]
-                    : ""
-                }
+                // defaultValue={
+                //   address["destination_floor"]
+                //     ? address["destination_floor"]
+                //     : ""
+                // }
                 onChange={(e) =>
                   handleChange("destination_floor", e.target.value)
                 }
               />
             </Form.Item>
-            <Button type="primary" block>
+            <Button type="primary" block htmlType="submit">
               Save
             </Button>
           </Form>

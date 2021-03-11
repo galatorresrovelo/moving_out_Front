@@ -35,7 +35,6 @@ function ItemsForm(props) {
       try {
         const { data } = await getItemsId(id);
         setItem(data);
-        console.log("888888", item);
       } catch (error) {
         console.log("fallo", error);
       }
@@ -77,19 +76,17 @@ function ItemsForm(props) {
     setLoading(true);
     const { data } = await axios.post(cloudinaryApi, fdata);
     console.dir(data);
-    const { data: value } = await createItems(data.secure_url);
     setLoading(false);
-    setItem(value);
   };
 
-  const sendItems = async (onFinishItem) => {
+  const sendItems = async () => {
     const action = id ? updateItems : createItems;
     const params = id
       ? { ...item, id }
-      : { ...onFinishItem, service: localStorage.getItem("servId") };
+      : { ...dataitem, service: localStorage.getItem("servId") };
     try {
       await action(params);
-      setItem({ Items: { item } });
+      setItem({ Items: { dataitem } });
       message.success("Item has been created");
       history.push("/extraservices");
     } catch (error) {
@@ -99,17 +96,18 @@ function ItemsForm(props) {
   };
 
   const sendItemsandNew = async () => {
+    const action = id ? updateItems : createItems;
+    const params = id
+      ? { ...item, id }
+      : { ...dataitem, service: localStorage.getItem("servId") };
     try {
-      const { data } = await createItems({
-        ...item,
-        service: localStorage.getItem("servId"),
-      });
-      setItem({ Items: { data } });
-      history.push("/items");
+      await action(params);
+      setItem({ Items: { dataitem } });
       message.success("Item has been created");
+      history.push("/items");
     } catch (error) {
+      //message.error("Error");
       console.log(error);
-      message.error("Error");
     }
   };
 
@@ -132,20 +130,20 @@ function ItemsForm(props) {
           <Form form={form} layout="vertical">
             <Form.Item name="name" label="Item Name:">
               <Input
-                //defaultValue={item["name"] ? item["name"] : ""}
+                // defaultValue={item["name"] ? item["name"] : ""}
                 onChange={(e) => handleChange("name", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="description" label="Description:">
               <Input
-                //defaultValue={item["description"] ? item["description"] : ""}
+                // defaultValue={item["description"] ? item["description"] : ""}
                 onChange={(e) => handleChange("description", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="type" label="Type:">
               <Select
                 showSearch
-                //defaultValue={item["type"] ? item["type"] : ""}
+                // defaultValue={item["type"] ? item["type"] : ""}
                 placeholder="Select a type"
                 optionFilterProp="children"
                 onChange={(e) => handleChange("type", e)}
@@ -163,7 +161,7 @@ function ItemsForm(props) {
                 <Option value="Fragile">Fragile</Option>
               </Select>
             </Form.Item>
-            <Form.Item name="height" label="Item Height:">
+            <Form.Item form={form} name="height" label="Item Height:">
               <Input
                 // defaultValue={item["height"] ? item["height"] : ""}
                 onChange={(e) => handleChange("height", e.target.value)}

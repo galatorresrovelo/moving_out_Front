@@ -104,11 +104,10 @@ function CreateItemsForm({ servId, closeModal }) {
       </Form.Item>
       <Form.Item name="url" label="Image">
         <Upload
-          name="avatar"
+          name="url"
           showUploadList={false}
           beforeUpload={handleChangeImg}
           listType="picture-card"
-          className="avatar-uploader"
         >
           {uploadButton}
         </Upload>

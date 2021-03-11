@@ -28,12 +28,13 @@ function FinalForm(serviceId) {
       const { data } = await getServicesbyId(localStorage.getItem("servId"));
       console.log("hhhhhhh", data);
       setTotalServ(data);
+      console.log("llllll", totalserv);
     }
     loadData();
   }, []);
 
   const close = () => {
-    history.push("/");
+    history.push("/myservices");
     message.success(
       "Your service is completed, you can edit it in My Services"
     );
@@ -58,14 +59,14 @@ function FinalForm(serviceId) {
           <Form form={form} layout="vertical">
             <Form.Item name="start_Date" label="Start Date:">
               <Input
-                defaultValue={dayjs(totalserv.start_Date).format("YYYY-MM-DD")}
+                value={dayjs(totalserv.start_Date).format("YYYY-MM-DD")}
                 type="date"
                 placeholder="Start Date"
               ></Input>
             </Form.Item>
             <Form.Item name="end_Date" label="End Date:">
               <Input
-                defaultValue={dayjs(totalserv.end_Date).format("YYYY-MM-DD")}
+                value={dayjs(totalserv.end_Date).format("YYYY-MM-DD")}
                 type="date"
                 placeholder="End Date"
               ></Input>
@@ -77,18 +78,18 @@ function FinalForm(serviceId) {
                 </Link>
               </Text>
             </Form.Item>
-            {/* {totalserv.items &&
-              totalserv.items.map((sub, subindex) => (
+            {totalserv.items &&
+              totalserv.items.map((element, index) => (
                 <Form.Item name="items" label="Items:">
-                  <Text key={subindex}>{sub.name}</Text>
+                  <Text key={index}>{element.name}</Text>
                 </Form.Item>
               ))}
-            {totalserv.extra_Services &&
-              totalserv.extraservices.map((sub, subindex) => (
+            {totalserv.items &&
+              totalserv.items.map((element, index) => (
                 <Form.Item name="extra_Services" label="Extra Services:">
-                  <Text key={subindex}>{sub.type}</Text>
+                  <Text key={index}>{element.type}</Text>
                 </Form.Item>
-              ))} */}
+              ))}
             <Button type="primary" block onClick={close}>
               Finish
             </Button>

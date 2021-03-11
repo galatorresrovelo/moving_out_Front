@@ -52,13 +52,10 @@ function ExtraServicesForm() {
   }
 
   useEffect(() => {
-    console.log("11111111", id);
     async function loadData() {
       try {
         const { data } = await getExtraServId(id);
-        console.log("11111111", data);
         setExtraservice({ extraservices: data });
-        console.log("11111111", extraservice);
       } catch (error) {
         console.log("fallo", error);
       }
@@ -66,16 +63,15 @@ function ExtraServicesForm() {
     if (id != null && id != undefined) loadData();
   }, []);
 
-  async function sendExtraservices(onFinishExtraservice) {
+  async function sendExtraservices() {
     const action = id ? updateExtraServInfo : createExtraServices;
     const params = id
       ? { ...extraservice, id }
-      : { ...onFinishExtraservice, service: localStorage.getItem("servId") };
+      : { ...dataeserv, service: localStorage.getItem("servId") };
     try {
       await action(params);
       message.success("Extra Service created");
-      setExtraservice({ extraservice: { extraservice } });
-      localStorage.removeItem("servId");
+      setExtraservice({ extraservice: { dataeserv } });
       history.push("/finish");
     } catch (error) {
       //message.error(error.response.data.message);
@@ -83,17 +79,16 @@ function ExtraServicesForm() {
     }
   }
 
-  async function sendExtraservicesandNew(onFinishExtraservice) {
+  async function sendExtraservicesandNew() {
     const action = id ? updateExtraServInfo : createExtraServices;
     const params = id
       ? { ...extraservice, id }
-      : { ...onFinishExtraservice, service: localStorage.getItem("servId") };
+      : { ...dataeserv, service: localStorage.getItem("servId") };
     try {
       await action(params);
       message.success("Extra Service created");
-      setExtraservice({ extraservice: { extraservice } });
-      localStorage.removeItem("servId");
-      history.push("/extraservice");
+      setExtraservice({ extraservice: { dataeserv } });
+      history.push("/extraservices");
     } catch (error) {
       //message.error(error.response.data.message);
       console.log(error);
@@ -126,7 +121,7 @@ function ExtraServicesForm() {
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onSearch={onSearch}
-                defaultValue={extraservice["type"] ? extraservice["type"] : ""}
+                //defaultValue={extraservice["type"] ? extraservice["type"] : ""}
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
                   0
@@ -144,9 +139,9 @@ function ExtraServicesForm() {
               <TextArea
                 rows={4}
                 onChange={(e) => handleChange(e.target.value)}
-                defaultValue={
-                  extraservice["description"] ? extraservice["description"] : ""
-                }
+                // defaultValue={
+                //   extraservice["description"] ? extraservice["description"] : ""
+                // }
               />
             </Form.Item>
             <Button type="primary" block onClick={sendExtraservices}>

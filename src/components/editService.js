@@ -24,19 +24,6 @@ function EditService({ servId, closeModal }) {
     console.log("search:", val);
   }
 
-  useEffect(() => {
-    async function loadData() {
-      //try {
-      const { data } = await getServicesbyId(localStorage.getItem("servId"));
-      console.log("rrrrr", servId);
-      setServiceInfo(data);
-      //} catch (error) {
-      // console.log("fallo", error);
-      //}
-    }
-    if (servId != null && servId != undefined) loadData();
-  }, []);
-
   const sendService = async (serviceInfo) => {
     try {
       const { data } = await updateServiceInfo(localStorage.getItem("servId"));
