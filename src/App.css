@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.logo {
+  margin-left: 20%;
+}
+
+Text h5 {
+  margin-bottom: 2%;
+}
+.Steps {
+  margin-left: 5%;
+  margin-right: 5%;
+}
