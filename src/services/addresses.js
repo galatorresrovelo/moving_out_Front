@@ -14,8 +14,8 @@ const _axios = axios.create({
 
 export const createAddresses = (addressesInfo) =>
   _axios.post("/", addressesInfo);
-export const updateAddressesInfo = (addressesId) =>
-  _axios.patch(`/${addressesId}`);
+export const updateAddressesInfo = ({ id, ...resaddress }) =>
+  _axios.patch(`/${id}`, ...resaddress);
 export const deleteAddresses = (addressesId) =>
   _axios.delete(`/${addressesId}`);
 export const getAddressesId = (addressesId) => _axios.get(`/${addressesId}`);

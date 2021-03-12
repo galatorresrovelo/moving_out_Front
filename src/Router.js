@@ -19,6 +19,7 @@ function Router() {
       <LayoutApp>
         <Switch>
           <Route component={Home} path="/" exact />
+          <Route component={Home} exact path="/activate/:id" />
           <LogOutRoute component={SignUp} path="/signup" />
           <LogOutRoute component={Login} path="/login" />
           <PrivateRoute component={Profile} path="/profile" />

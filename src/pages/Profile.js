@@ -11,14 +11,14 @@ import {
   Input,
   message,
 } from "antd";
-import { updateAvatar } from "../services/auth";
+import { updateAvatar, editUser } from "../services/auth";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 const { Title } = Typography;
 
-function Profile() {
+function Profile(props) {
   const history = useHistory();
   const { user, setUser } = useAuthInfo();
   const [loading, setLoading] = useState(false);
@@ -49,9 +49,9 @@ function Profile() {
     setUser(user);
   };
 
-  const updateUser = async (userInfo) => {
+  const updateUser = async () => {
     try {
-      const { data } = await updateUser(userInfo);
+      const { data } = await editUser(datauser);
       setUser(data);
       message.success("User Updated");
       history.push("/myservices");

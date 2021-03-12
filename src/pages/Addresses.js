@@ -22,7 +22,7 @@ const { Step } = Steps;
 
 function AddressesForm(props) {
   const [form] = Form.useForm();
-  const [address, setAddress] = useLocalStorage(null, "addresses");
+  const [address, setAddress] = useLocalStorage({}, "addresses");
   const [dataaddress, setDataaddress] = useState({});
   const history = useHistory();
   const { id } = props.match.params;
@@ -43,18 +43,23 @@ function AddressesForm(props) {
     setDataaddress({ ...dataaddress, [name]: value });
     console.log(dataaddress);
   }
-  async function sendAddresses(onFinishAddress) {
+
+  async function sendAddresses(dataaddress) {
     const action = id ? updateAddressesInfo : createAddresses;
     const params = id
       ? { ...address, id }
-      : { ...onFinishAddress, service: localStorage.getItem("servId") };
+      : { ...dataaddress, service: localStorage.getItem("servId") };
     try {
       await action(params);
-      message.success("Addresses created");
-      setAddress({ Adresses: { address } });
-      history.push("/items");
+      message.success("Addresses have been saved");
+      setAddress({ Adresses: { dataaddress } });
+      if (id) {
+        history.push("/myservices");
+      } else {
+        history.push("/items");
+      }
     } catch (error) {
-      message.error(error.response.data.message);
+      console.log(error);
     }
   }
 
@@ -77,33 +82,33 @@ function AddressesForm(props) {
           <Form form={form} layout="vertical" onFinish={sendAddresses}>
             <Form.Item name="origin" label="Origin Address:">
               <Input
-                //defaultValue={address["origin"] ? address["origin"] : ""}
+                defaultValue={address["origin"] ? address["origin"] : ""}
                 onChange={(e) => handleChange("origin", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="origin_floor" label="Origin Floor:">
               <Input
-                // defaultValue={
-                //   address["origin_floor"] ? address["origin_floor"] : ""
-                // }
+                defaultValue={
+                  address["origin_floor"] ? address["origin_floor"] : ""
+                }
                 onChange={(e) => handleChange("origin_floor", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="destination" label="Destination Address:">
               <Input
-                // defaultValue={
-                //   address["destination"] ? address["destination"] : ""
-                // }
+                defaultValue={
+                  address["destination"] ? address["destination"] : ""
+                }
                 onChange={(e) => handleChange("destination", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="destination_floor" label="Destination Floor:">
               <Input
-                // defaultValue={
-                //   address["destination_floor"]
-                //     ? address["destination_floor"]
-                //     : ""
-                // }
+                defaultValue={
+                  address["destination_floor"]
+                    ? address["destination_floor"]
+                    : ""
+                }
                 onChange={(e) =>
                   handleChange("destination_floor", e.target.value)
                 }

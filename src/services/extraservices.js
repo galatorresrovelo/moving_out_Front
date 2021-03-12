@@ -14,8 +14,8 @@ const _axios = axios.create({
 
 export const createExtraServices = (extraservicesInfo) =>
   _axios.post("/", extraservicesInfo);
-export const updateExtraServInfo = (extraservicesId) =>
-  _axios.patch(`/${extraservicesId}`);
+export const updateExtraServInfo = ({ id, ...reseservice }) =>
+  _axios.patch(`/${id}`, reseservice);
 export const deleteExtraServ = (extraservicesId) =>
   _axios.delete(`/${extraservicesId}`);
 export const getExtraServId = (extraservicesId) =>

@@ -11,6 +11,7 @@ import {
   Input,
   Upload,
   Switch,
+  Avatar,
 } from "antd";
 import { createItems, getItemsId, updateItems } from "../services/items";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
@@ -24,17 +25,20 @@ const { Option } = Select;
 
 function ItemsForm(props) {
   const [form] = Form.useForm();
-  const [item, setItem] = useLocalStorage(null, "items");
+  const [item, setItem] = useLocalStorage({}, "items");
   const [dataitem, setDataitem] = useState({});
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { id } = props.match.params;
 
   useEffect(() => {
+    console.log("ddddd", id);
     async function loadData() {
       try {
         const { data } = await getItemsId(id);
+        console.log("eeeeee", data);
         setItem(data);
+        console.log("fffff", item);
       } catch (error) {
         console.log("fallo", error);
       }
@@ -87,8 +91,12 @@ function ItemsForm(props) {
     try {
       await action(params);
       setItem({ Items: { dataitem } });
-      message.success("Item has been created");
-      history.push("/extraservices");
+      message.success("Item has been saved");
+      if (id) {
+        history.push("/myservices");
+      } else {
+        history.push("/extraservices");
+      }
     } catch (error) {
       //message.error("Error");
       console.log(error);
@@ -103,8 +111,12 @@ function ItemsForm(props) {
     try {
       await action(params);
       setItem({ Items: { dataitem } });
-      message.success("Item has been created");
-      history.push("/items");
+      message.success("Item has been saved");
+      if (id) {
+        history.push("/myservices");
+      } else {
+        history.push("/extraservices");
+      }
     } catch (error) {
       //message.error("Error");
       console.log(error);
@@ -130,20 +142,20 @@ function ItemsForm(props) {
           <Form form={form} layout="vertical">
             <Form.Item name="name" label="Item Name:">
               <Input
-                // defaultValue={item["name"] ? item["name"] : ""}
+                defaultValue={item["name"] ? item["name"] : ""}
                 onChange={(e) => handleChange("name", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="description" label="Description:">
               <Input
-                // defaultValue={item["description"] ? item["description"] : ""}
+                defaultValue={item["description"] ? item["description"] : ""}
                 onChange={(e) => handleChange("description", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="type" label="Type:">
               <Select
                 showSearch
-                // defaultValue={item["type"] ? item["type"] : ""}
+                defaultValue={item["type"] ? item["type"] : ""}
                 placeholder="Select a type"
                 optionFilterProp="children"
                 onChange={(e) => handleChange("type", e)}
@@ -163,45 +175,56 @@ function ItemsForm(props) {
             </Form.Item>
             <Form.Item form={form} name="height" label="Item Height:">
               <Input
-                // defaultValue={item["height"] ? item["height"] : ""}
+                defaultValue={item["height"] ? item["height"] : ""}
                 onChange={(e) => handleChange("height", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="width" label="Item Width:">
               <Input
-                // defaultValue={item["width"] ? item["width"] : ""}
+                defaultValue={item["width"] ? item["width"] : ""}
                 onChange={(e) => handleChange("width", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="weight" label="Item Weight:">
               <Input
-                // defaultValue={item["weight"] ? item["weight"] : ""}
+                defaultValue={item["weight"] ? item["weight"] : ""}
                 onChange={(e) => handleChange("weight", e.target.value)}
               />
             </Form.Item>
             <Form.Item name="plaster" label="Plaster:">
               <Switch
-                // defaultValue={item["plaster"] ? item["plaster"] : ""}
+                defaultValue={item["plaster"] ? item["plaster"] : ""}
                 onChange={(e) => handleChange("plaster", e.target)}
               ></Switch>
             </Form.Item>
-            <Form.Item name="url" label="Image">
-              <Upload
-                name="url"
-                showUploadList={false}
-                beforeUpload={handleChangeImg}
-                listType="picture-card"
-                className="url-uploader"
-              >
-                {uploadButton}
-              </Upload>
+            {item.url && (
+              <Form.Item name="url" label="Item Image:">
+                <Avatar size={80} src={item.url} />
+              </Form.Item>
+            )}
+            {!item.url && (
+              <Form.Item name="url" label="Image">
+                <Upload
+                  name="url"
+                  showUploadList={false}
+                  beforeUpload={handleChangeImg}
+                  listType="picture-card"
+                  className="url-uploader"
+                >
+                  {uploadButton}
+                </Upload>
+              </Form.Item>
+            )}
+            <Form.Item>
+              <Button type="primary" block onClick={() => sendItems()}>
+                Save
+              </Button>
             </Form.Item>
-            <Button type="primary" block onClick={() => sendItems()}>
-              Save
-            </Button>
-            <Button type="primary" block onClick={() => sendItemsandNew()}>
-              Save and New
-            </Button>
+            <Form.Item>
+              <Button type="primary" block onClick={() => sendItemsandNew()}>
+                Save and New
+              </Button>
+            </Form.Item>
           </Form>
         </Col>
       </Row>

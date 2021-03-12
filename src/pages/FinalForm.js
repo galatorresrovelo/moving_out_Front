@@ -18,9 +18,9 @@ import dayjs from "dayjs";
 const { Step } = Steps;
 const { Text } = Typography;
 
-function FinalForm(serviceId) {
+function FinalForm(servId) {
   const [form] = Form.useForm();
-  const [totalserv, setTotalServ] = useLocalStorage(null, "Total_Serv");
+  const [totalserv, setTotalServ] = useLocalStorage({}, "Total_Serv");
   const history = useHistory();
 
   useEffect(() => {
@@ -59,35 +59,37 @@ function FinalForm(serviceId) {
           <Form form={form} layout="vertical">
             <Form.Item name="start_Date" label="Start Date:">
               <Input
-                value={dayjs(totalserv.start_Date).format("YYYY-MM-DD")}
+                defaultValue={dayjs(totalserv.start_Date).format("YYYY-MM-DD")}
                 type="date"
                 placeholder="Start Date"
               ></Input>
             </Form.Item>
             <Form.Item name="end_Date" label="End Date:">
               <Input
-                value={dayjs(totalserv.end_Date).format("YYYY-MM-DD")}
+                defaultValue={dayjs(totalserv.end_Date).format("YYYY-MM-DD")}
                 type="date"
                 placeholder="End Date"
               ></Input>
             </Form.Item>
             <Form.Item name="addresses" label="Addresses:">
               <Text>
-                <Link to={`addresses/address/${totalserv.addresses}`}>
-                  Record
-                </Link>
+                <Link to={`addresses/${totalserv.addresses}`}>Record</Link>
               </Text>
             </Form.Item>
             {totalserv.items &&
               totalserv.items.map((element, index) => (
                 <Form.Item name="items" label="Items:">
-                  <Text key={index}>{element.name}</Text>
+                  <Text key={index}>
+                    <Link to={`/items/${element}`}>{index}</Link>
+                  </Text>
                 </Form.Item>
               ))}
-            {totalserv.items &&
-              totalserv.items.map((element, index) => (
+            {totalserv.extra_Services &&
+              totalserv.extra_Services.map((element, index) => (
                 <Form.Item name="extra_Services" label="Extra Services:">
-                  <Text key={index}>{element.type}</Text>
+                  <Text key={index}>
+                    <Link to={`/extraservices/${element}`}>{index}</Link>
+                  </Text>
                 </Form.Item>
               ))}
             <Button type="primary" block onClick={close}>

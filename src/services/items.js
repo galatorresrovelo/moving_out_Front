@@ -13,6 +13,7 @@ const _axios = axios.create({
 });
 
 export const createItems = (itemsInfo) => _axios.post("/", itemsInfo);
-export const updateItems = (itemsId) => _axios.patch(`/${itemsId}`);
+export const updateItems = ({ id, ...resitem }) =>
+  _axios.patch(`/${id}`, resitem);
 export const deleteItems = (itemsId) => _axios.delete(`/${itemsId}`);
 export const getItemsId = (itemsId) => _axios.get(`/${itemsId}`);

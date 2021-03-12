@@ -26,11 +26,8 @@ const { TextArea } = Input;
 
 function ExtraServicesForm() {
   const [form] = Form.useForm();
+  const [extraservice, setExtraservice] = useLocalStorage({}, "extraservices");
   const [dataeserv, setDataeserv] = useState({});
-  const [extraservice, setExtraservice] = useLocalStorage(
-    null,
-    "extraservices"
-  );
   const history = useHistory();
   const { id } = useParams();
 
@@ -55,7 +52,7 @@ function ExtraServicesForm() {
     async function loadData() {
       try {
         const { data } = await getExtraServId(id);
-        setExtraservice({ extraservices: data });
+        setExtraservice(data);
       } catch (error) {
         console.log("fallo", error);
       }
@@ -70,9 +67,13 @@ function ExtraServicesForm() {
       : { ...dataeserv, service: localStorage.getItem("servId") };
     try {
       await action(params);
-      message.success("Extra Service created");
-      setExtraservice({ extraservice: { dataeserv } });
-      history.push("/finish");
+      message.success("Extra Service has been saved");
+      setExtraservice({ extraservices: { dataeserv } });
+      if (id) {
+        history.push("/myservices");
+      } else {
+        history.push("/finish");
+      }
     } catch (error) {
       //message.error(error.response.data.message);
       console.log(error);
@@ -86,9 +87,13 @@ function ExtraServicesForm() {
       : { ...dataeserv, service: localStorage.getItem("servId") };
     try {
       await action(params);
-      message.success("Extra Service created");
-      setExtraservice({ extraservice: { dataeserv } });
-      history.push("/extraservices");
+      message.success("Extra Service has been saved");
+      setExtraservice({ extraservices: { dataeserv } });
+      if (id) {
+        history.push("/myservices");
+      } else {
+        history.push("/finish");
+      }
     } catch (error) {
       //message.error(error.response.data.message);
       console.log(error);
@@ -117,11 +122,11 @@ function ExtraServicesForm() {
                 showSearch
                 placeholder="Select a type"
                 optionFilterProp="children"
+                defaultValue={extraservice["type"] ? extraservice["type"] : ""}
                 onChange={(e) => handleChange(e.target)}
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onSearch={onSearch}
-                //defaultValue={extraservice["type"] ? extraservice["type"] : ""}
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
                   0
@@ -138,18 +143,26 @@ function ExtraServicesForm() {
             <Form.Item name="description" label="Description:">
               <TextArea
                 rows={4}
+                defaultValue={
+                  extraservice["description"] ? extraservice["description"] : ""
+                }
                 onChange={(e) => handleChange(e.target.value)}
-                // defaultValue={
-                //   extraservice["description"] ? extraservice["description"] : ""
-                // }
               />
             </Form.Item>
-            <Button type="primary" block onClick={sendExtraservices}>
-              Save
-            </Button>
-            <Button type="primary" block onClick={sendExtraservicesandNew}>
-              Save and New
-            </Button>
+            <Form.Item>
+              <Button type="primary" block onClick={() => sendExtraservices()}>
+                Save
+              </Button>
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                block
+                onClick={() => sendExtraservicesandNew()}
+              >
+                Save and New
+              </Button>
+            </Form.Item>
           </Form>
         </Col>
       </Row>
