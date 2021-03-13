@@ -112,7 +112,7 @@ function ItemsForm(props) {
       if (id) {
         history.push("/myservices");
       } else {
-        history.push("/extraservices");
+        history.push("/items");
       }
     } catch (error) {
       //message.error("Error");

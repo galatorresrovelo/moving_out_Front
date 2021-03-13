@@ -93,7 +93,7 @@ function ExtraServicesForm() {
       if (id) {
         history.push("/myservices");
       } else {
-        history.push("/finish");
+        history.push("/extraservices");
       }
     } catch (error) {
       //message.error(error.response.data.message);

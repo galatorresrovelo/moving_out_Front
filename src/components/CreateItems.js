@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form, Input, message, Select, Upload } from "antd";
+import { Button, Form, Input, message, Select, Upload, Switch } from "antd";
 import { createItems, updateItemsInfo } from "../services/items";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -101,6 +101,9 @@ function CreateItemsForm({ servId, closeModal }) {
       </Form.Item>
       <Form.Item name="weight" label="Item Weight:">
         <Input />
+      </Form.Item>
+      <Form.Item name="plaster" label="Plaster:">
+        <Switch></Switch>
       </Form.Item>
       <Form.Item name="url" label="Image">
         <Upload
