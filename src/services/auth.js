@@ -1,7 +1,9 @@
 import axios from "axios";
 
 const baseURL =
-  process.env.NODE_ENV === "production" ? "/auth" : "http://localhost:3001/api";
+  process.env.NODE_ENV === "production"
+    ? "https://movingout88.herokuapp.com/api"
+    : "http://localhost:3001/api";
 
 axios.defaults.withCredentials = true;
 

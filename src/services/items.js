@@ -3,7 +3,7 @@ import axios from "axios";
 // Preparandonos para el futuro... podemos definir una url varieble en funcion al entorno donde se ejecuta nuestro proyecto
 const baseURL =
   process.env.NODE_ENV === "production"
-    ? "/items"
+    ? "https://movingout88.herokuapp.com/api/items"
     : "http://localhost:3001/api/items";
 
 const _axios = axios.create({
