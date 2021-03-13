@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   Form,
   Typography,
@@ -5,28 +6,63 @@ import {
   Row,
   Button,
   message,
-  DatePicker,
+  Input,
   Steps,
 } from "antd";
-import { createService } from "../services/service";
+import {
+  createService,
+  updateServiceInfo,
+  getServicesbyId,
+} from "../services/service";
+import useLocalStorage from "../hooks/useLocalStorage";
 import { useHistory } from "react-router-dom";
+import dayjs from "dayjs";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
 import "../App.css";
 
 const { Step } = Steps;
 
-function Service() {
+function Service(props) {
   const [form] = Form.useForm();
+  const [service, setService] = useLocalStorage({}, "service");
+  const [dataservice, setDataservice] = useState({});
   const history = useHistory();
+  const { id } = props.match.params;
 
-  async function handleSubmit(serviceInfo) {
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const { data } = await getServicesbyId(id);
+        console.log("eeeeee", data);
+        setService(data);
+        console.log("fffff", service);
+      } catch (error) {
+        console.log("fallo", error);
+      }
+    }
+    if (id != null && id != undefined) loadData();
+  }, []);
+
+  function handleChange(name, value) {
+    setDataservice({ ...dataservice, [name]: value });
+    console.log(dataservice);
+  }
+
+  async function handleSubmit(dataservice) {
+    const action = id ? updateServiceInfo : createService;
+    const params = id ? { ...dataservice, id } : { ...dataservice };
     try {
-      const { data } = await createService(serviceInfo);
-      console.log(data);
+      const { data } = await action(params);
+      setService({ service: { dataservice } });
       localStorage.setItem("servId", data.service._id);
-      message.success("Service created");
-      history.push("/addresses");
+      message.success("Service has been saved");
+      if (id) {
+        history.push("/myservices");
+      } else {
+        history.push("/addresses");
+      }
     } catch (error) {
-      message.error(error);
+      console.dir(error);
     }
   }
 
@@ -48,10 +84,30 @@ function Service() {
           ,<Typography.Title level={1}>Service</Typography.Title>
           <Form form={form} onFinish={handleSubmit} layout="vertical">
             <Form.Item name="start_Date" label="Start Date:">
-              <DatePicker style={{ width: "95%" }} />
+              <Input
+                name="start_Date"
+                defaultValue={
+                  dayjs(service.start_Date).format("YYYY-MM-DD")
+                    ? dayjs(service.start_Date).format("YYYY-MM-DD")
+                    : ""
+                }
+                type="date"
+                onChange={(e) => handleChange("start_Date", e.target.value)}
+                placeholder="Start Date"
+              ></Input>
             </Form.Item>
             <Form.Item name="end_Date" label="End Date:">
-              <DatePicker style={{ width: "95%" }} />
+              <Input
+                name="end_Date"
+                defaultValue={
+                  dayjs(service.end_Date).format("YYYY-MM-DD")
+                    ? dayjs(service.end_Date).format("YYYY-MM-DD")
+                    : dataservice.start_Date
+                }
+                onChange={(e) => handleChange("end_Date", e.target.value)}
+                placeholder="End Date:"
+                type="date"
+              ></Input>
             </Form.Item>
             <Button type="primary" htmlType="submit" block size="large">
               Save

@@ -22,8 +22,9 @@ function Router() {
           <Route component={Home} exact path="/activate/:id" />
           <LogOutRoute component={SignUp} path="/signup" />
           <LogOutRoute component={Login} path="/login" />
-          <PrivateRoute component={Profile} path="/profile" />
-          <PrivateRoute component={Service} path="/service" />
+          <PrivateRoute component={Profile} exact path="/profile" />
+          <PrivateRoute component={Profile} exact path="/user/update" />
+          <PrivateRoute component={Service} exact path="/service" />
           <PrivateRoute component={updateService} path="/myservices" />
           <PrivateRoute component={AddressesForm} exact path="/addresses" />
           <PrivateRoute component={ItemsForm} exact path="/items" />
@@ -32,6 +33,7 @@ function Router() {
             exact
             path="/extraservices"
           />
+          <PrivateRoute component={Service} exact path="/service/:id" />
           <PrivateRoute component={AddressesForm} exact path="/addresses/:id" />
           <PrivateRoute component={ItemsForm} exact path="/items/:id" />
           <PrivateRoute

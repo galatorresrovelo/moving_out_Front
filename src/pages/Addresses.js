@@ -44,22 +44,22 @@ function AddressesForm(props) {
     console.log(dataaddress);
   }
 
-  async function sendAddresses(dataaddress) {
+  async function sendAddresses() {
     const action = id ? updateAddressesInfo : createAddresses;
     const params = id
-      ? { ...address, id }
+      ? { ...dataaddress, id }
       : { ...dataaddress, service: localStorage.getItem("servId") };
     try {
       await action(params);
-      message.success("Addresses have been saved");
       setAddress({ Adresses: { dataaddress } });
+      message.success("Addresses have been saved");
       if (id) {
         history.push("/myservices");
       } else {
         history.push("/items");
       }
     } catch (error) {
-      console.log(error);
+      console.dir(error);
     }
   }
 

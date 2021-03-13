@@ -13,7 +13,8 @@ export const signupFn = (user) => _axios.post("/auth/signup", user);
 export const loginFn = (user) => _axios.post("/auth/login", user);
 export const logoutFn = () => _axios.get("/auth/logout");
 export const getCurrentUser = () => _axios.get("/auth/session");
-export const editUser = (userInfo) => _axios.patch("/user/update", userInfo);
+export const editUser = ({ user, ...restuser }) =>
+  _axios.patch("/auth/user/update", restuser);
 export const updateAvatar = (avatar) =>
-  _axios.post("/avatar/change", { avatar });
+  _axios.post("/auth/avatar/change", { avatar });
 export const updateActive = (userId) => _axios.patch(`/auth/active/${userId}`);

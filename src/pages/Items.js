@@ -32,13 +32,10 @@ function ItemsForm(props) {
   const { id } = props.match.params;
 
   useEffect(() => {
-    console.log("ddddd", id);
     async function loadData() {
       try {
         const { data } = await getItemsId(id);
-        console.log("eeeeee", data);
         setItem(data);
-        console.log("fffff", item);
       } catch (error) {
         console.log("fallo", error);
       }
@@ -86,7 +83,7 @@ function ItemsForm(props) {
   const sendItems = async () => {
     const action = id ? updateItems : createItems;
     const params = id
-      ? { ...item, id }
+      ? { ...dataitem, id }
       : { ...dataitem, service: localStorage.getItem("servId") };
     try {
       await action(params);
@@ -106,7 +103,7 @@ function ItemsForm(props) {
   const sendItemsandNew = async () => {
     const action = id ? updateItems : createItems;
     const params = id
-      ? { ...item, id }
+      ? { ...dataitem, id }
       : { ...dataitem, service: localStorage.getItem("servId") };
     try {
       await action(params);
@@ -194,7 +191,7 @@ function ItemsForm(props) {
             <Form.Item name="plaster" label="Plaster:">
               <Switch
                 defaultValue={item["plaster"] ? item["plaster"] : ""}
-                onChange={(e) => handleChange("plaster", e.target)}
+                onChange={(e) => handleChange("plaster", e)}
               ></Switch>
             </Form.Item>
             {item.url && (

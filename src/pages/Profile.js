@@ -16,9 +16,9 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
-function Profile(props) {
+function Profile() {
   const history = useHistory();
   const { user, setUser } = useAuthInfo();
   const [loading, setLoading] = useState(false);
@@ -51,7 +51,7 @@ function Profile(props) {
 
   const updateUser = async () => {
     try {
-      const { data } = await editUser(datauser);
+      const { data } = await editUser(datauser, user._id);
       setUser(data);
       message.success("User Updated");
       history.push("/myservices");
@@ -81,15 +81,11 @@ function Profile(props) {
               </Upload>
             </Col>
             <Col span={24}>
-              <Input
-                defaultValue={user.username}
-                placeholder="Username:"
-                onChange={(e) => onChange("username", e.target.value)}
-              ></Input>
+              <Text placeholder="Username:">{user.username}</Text>
             </Col>
             <Col span={24}>
               <Input
-                defaultValue={user.phone}
+                defaultValue={user["phone"] ? user["phone"] : ""}
                 placeholder="Phone:"
                 onChange={(e) => onChange("phone", e.target.value)}
               ></Input>

@@ -63,7 +63,7 @@ function ExtraServicesForm() {
   async function sendExtraservices() {
     const action = id ? updateExtraServInfo : createExtraServices;
     const params = id
-      ? { ...extraservice, id }
+      ? { ...dataeserv, id }
       : { ...dataeserv, service: localStorage.getItem("servId") };
     try {
       await action(params);
@@ -81,9 +81,10 @@ function ExtraServicesForm() {
   }
 
   async function sendExtraservicesandNew() {
+    console.log("666666", dataeserv);
     const action = id ? updateExtraServInfo : createExtraServices;
     const params = id
-      ? { ...extraservice, id }
+      ? { ...dataeserv, id }
       : { ...dataeserv, service: localStorage.getItem("servId") };
     try {
       await action(params);
@@ -120,10 +121,12 @@ function ExtraServicesForm() {
             <Form.Item name="type" label="Type:">
               <Select
                 showSearch
+                name="type"
+                defaultValue={extraservice["type"] ? extraservice["type"] : ""}
                 placeholder="Select a type"
                 optionFilterProp="children"
-                defaultValue={extraservice["type"] ? extraservice["type"] : ""}
-                onChange={(e) => handleChange(e.target)}
+                optionFilterProp="children"
+                onChange={(e) => handleChange("type", e)}
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onSearch={onSearch}
@@ -143,10 +146,11 @@ function ExtraServicesForm() {
             <Form.Item name="description" label="Description:">
               <TextArea
                 rows={4}
+                name="description"
                 defaultValue={
                   extraservice["description"] ? extraservice["description"] : ""
                 }
-                onChange={(e) => handleChange(e.target.value)}
+                onChange={(e) => handleChange("description", e.target.value)}
               />
             </Form.Item>
             <Form.Item>

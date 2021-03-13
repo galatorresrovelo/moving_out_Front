@@ -13,7 +13,6 @@ import {
 import CreateAddressesForm from "../components/CreateAddressesForm";
 import CreateItemsForm from "../components/CreateItems";
 import CreateExtraServForm from "../components/CreateExtraServ";
-import editService from "../components/editService";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { getMyServices } from "../services/service";
 import { useAuthInfo } from "../hooks/authContext";
@@ -119,16 +118,11 @@ function UpdateService() {
               )}
               {itemServ.status === "Draft" && (
                 <Col span={24}>
-                  <Button
-                    block
-                    type="primary"
-                    onClick={() => {
-                      localStorage.setItem("servId", itemServ._id);
-                      openModalEdit();
-                    }}
-                  >
-                    Edit
-                  </Button>
+                  <Link to={`/service/${itemServ._id}`}>
+                    <Button block type="primary">
+                      Edit
+                    </Button>
+                  </Link>
                 </Col>
               )}
               {!itemServ.addresses && itemServ.status === "Draft" && (
@@ -215,14 +209,6 @@ function UpdateService() {
           </Card>
         </Col>
       )}
-      <Modal
-        title="Edit"
-        onCancel={closeModalEdit}
-        visible={showModalEdit}
-        footer={false}
-      >
-        <editService servId={id} closeModal={closeModalEdit} />
-      </Modal>
       <Modal
         title="Addresses Info"
         onCancel={closeModalAddresses}

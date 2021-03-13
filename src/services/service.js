@@ -13,8 +13,8 @@ const _axios = axios.create({
 });
 
 export const createService = (serviceInfo) => _axios.post("/", serviceInfo);
-export const updateServiceInfo = (serviceId, serviceInfo) =>
-  _axios.patch(`/${serviceId}`, serviceInfo);
+export const updateServiceInfo = ({ id, ...restserv }) =>
+  _axios.patch(`/${id}`, restserv);
 export const updateServiceRating = (rating, serviceId) =>
   _axios.patch(`/rating/${serviceId}`, { rating });
 export const updateServiceStatus = (status, serviceId) =>
